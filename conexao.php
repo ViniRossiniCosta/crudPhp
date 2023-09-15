@@ -6,6 +6,4 @@ $senha = "";
 $dbname = "celke";
 
 // criar conexao
-$conn = mysql_connect($servidor, $usuario, $senha, $dbname);
-
-?>
+$conn = mysqli_connect($servidor, $usuario, $senha, $dbname);
