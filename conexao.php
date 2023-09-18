@@ -3,7 +3,7 @@
 $servidor = "localhost";
 $usuario = "root";
 $senha = "";
-$dbname = "celke";
+$dbname = "formPhp";
 
 // cria conexao
 $conn = mysqli_connect($servidor, $usuario, $senha, $dbname);

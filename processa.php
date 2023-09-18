@@ -13,8 +13,10 @@ $result_usuario = "INSERT INTO usuarios (nome, email, created) VALUES ('$nome', 
 $resultado_usuario = mysqli_query($conn, $result_usuario);
 
 if(mysqli_insert_id($conn)) {
+    $_SESSION['msg'] = "<p style = 'color:green;'>Usuario cadastrado com sucesso</p>";
     header("Location: index.php");
 }else {
+    $_SESSION['msg'] = "<p style = 'color:red;'>Usuario não cadastrado</p>";
     header("Location: index.php");
 }
 
