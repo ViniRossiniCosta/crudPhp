@@ -19,5 +19,4 @@ if(mysqli_insert_id($conn)) {
     $_SESSION['msg'] = "<p style = 'color:red;'>Usuario não cadastrado</p>";
     header("Location: index.php");
 }
-
 ?>
