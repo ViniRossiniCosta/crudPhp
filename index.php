@@ -1,33 +1,33 @@
-<?php 
-    session_start();
-?>
+<?php
 
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD - cadastrar</title>
+    <meta charset="utf-8">
+    <title>CRUD - Cadastrar</title>
 </head>
 
 <body>
-    <h1>Cadastrar Usuario</h1>
-
-    <?php 
-        if(isset($_SESSION['msg'])){
-            echo $_SESSION['msg'];
-            unset($_SESSION['msg']);
-        }
+    <a href="index.php">Cadastrar</a><br>
+    <a href="listar.php">Listar</a><br>
+    <h1>Cadastrar Usuário</h1>
+    <?php
+    if (isset($_SESSION['msg'])) {
+        echo $_SESSION['msg'];
+        unset($_SESSION['msg']);
+    }
     ?>
+    <form method="POST" action="processa_cad.php">
+        <label>Nome: </label>
+        <input type="text" name="nome" placeholder="Digite seu nome"><br><br>
 
-    <form method="POST" action="processa.php">
-        <label for="">Nome: </label>
-        <input type="text" name="" id="" placeholder=" digite seu nome">
-        <br>
-        <label for="">E-mail: </label>
-        <input type="email" name="" id="" placeholder=" digite seu email">
-        <br>
+        <label>E-mail: </label>
+        <input type="email" name="email" placeholder="Digite o seu e-mail"><br><br>
+
         <input type="submit" value="Cadastrar">
     </form>
 </body>

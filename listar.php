@@ -1,75 +1,76 @@
 <?php
+
 session_start();
 include_once("conexao.php");
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD - Lista de usuarios</title>
+	<meta charset="utf-8">
+	<title>CRUD - Listar</title>
 </head>
 
 <body>
+	<a href="index.php">Cadastrar</a><br>
+	<a href="listar.php">Listar</a><br>
+	<h1>Listar Usuário</h1>
+	<?php
+	if (isset($_SESSION['msg'])) {
+		echo $_SESSION['msg'];
+		unset($_SESSION['msg']);
+	}
 
-    <a href="/index.php">Cadastrar</a><br>
-    <a href="/listar.php">Listar</a><br>
+	//Receber o número da página
+	$pagina_atual = filter_input(INPUT_GET, 'pagina', FILTER_SANITIZE_NUMBER_INT);
+	$pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
 
-    <h1>Lista de usuarios</h1>
+	//Setar a quantidade de itens por pagina
+	$qnt_result_pg = 1;
 
-    <?php
-    if (isset($_SESSION['msg'])) {
-        echo $_SESSION['msg'];
-        unset($_SESSION['msg']);
-    }
+	//calcular o inicio visualização
+	$inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
-    $pagina_atual = filter_input(INPUT_GET, 'pagina', FILTER_SANITIZE_NUMBER_INT);
+	$result_usuarios = "SELECT * FROM usuarios LIMIT $inicio, $qnt_result_pg";
+	$resultado_usuarios = mysqli_query($conn, $result_usuarios);
+	while ($row_usuario = mysqli_fetch_assoc($resultado_usuarios)) {
+		echo "ID: " . $row_usuario['id'] . "<br>";
+		echo "Nome: " . $row_usuario['nome'] . "<br>";
+		echo "E-mail: " . $row_usuario['email'] . "<br>";
+		echo "<a href='editar.php?id=" . $row_usuario['id'] . "'>Editar</a><br>";
+		echo "<a href='processa_delete.php?id=" . $row_usuario['id'] . "'>Deletar</a><br><hr>";
+	}
 
-    $pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
+	//Paginção - Somar a quantidade de usuários
+	$result_pg = "SELECT COUNT(id) AS num_result FROM usuarios";
+	$resultado_pg = mysqli_query($conn, $result_pg);
+	$row_pg = mysqli_fetch_assoc($resultado_pg);
+	//echo $row_pg['num_result'];
+	//Quantidade de pagina 
+	$quantidade_pg = ceil($row_pg['num_result'] / $qnt_result_pg);
 
-    $qnt_result_pg = 2;
+	//Limitar os link antes depois
+	$max_links = 2;
+	echo "<a href='listar.php?pagina=1'>Primeira</a> ";
 
-    $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
+	for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
+		if ($pag_ant >= 1) {
+			echo "<a href='listar.php?pagina=$pag_ant'>$pag_ant</a> ";
+		}
+	}
 
-    $result_usuario = "SELECT * FROM usuarios LIMIT $inicio, $qnt_result_pg";
-    $resultado_usuario = mysqli_query($conn, $result_usuario);
-    while ($row_usuario = mysqli_fetch_assoc($resultado_usuario)) {
-        echo "ID: " . $row_usuario['id'] . "<br>";
-        echo "Nome: " . $row_usuario['nome'] . "<br>";
-        echo "E-mail: " . $row_usuario['email'] . "<br><hr>";
-    }
+	echo "$pagina ";
 
-    $result_pg = "SELECT COUNT(id) AS num_result FROM usuarios";
-    $resultado_pg = mysqli_query($conn, $resultado_pg);
-    $row_pg = mysqli_fetch_assoc($resultado_pg);
-    echo $row_pg['num_result'];
+	for ($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++) {
+		if ($pag_dep <= $quantidade_pg) {
+			echo "<a href='listar.php?pagina=$pag_dep'>$pag_dep</a> ";
+		}
+	}
 
-    $quantidade_pg = ceil($row_pg['num_result'] / $qnt_result_pg);
+	echo "<a href='listar.php?pagina=$quantidade_pg'>Ultima</a>";
 
-    $max_links = 2;
-
-    echo "<a href='listar.php?pagina=1'> Primeira </a>";
-
-    for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
-        if ($pag_ant >= 1) {
-            echo "<a herf='listar.php?pagina=$pag_ant'> $pag_ant</a>";
-        }
-    }
-
-    echo "$pagina";
-
-    echo "<a href='listar.php?pagina=$quantidade_pg'> Ultima </a>";
-
-    for ($pag_dps = $pagina + 1; $pag_dps <= $pagina + $max_links; $pag_dps++) {
-        if ($pag_dps <= $quantidade_pg) {
-            echo "<a herf='listar.php?pagina=$pag_dps'>$pag_dps</a>";
-        }
-    }
-
-    ?>
-
+	?>
 </body>
 
 </html>

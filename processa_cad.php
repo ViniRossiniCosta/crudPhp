@@ -11,9 +11,9 @@ $resultado_usuario = mysqli_query($conn, $result_usuario);
 
 if(mysqli_insert_id($conn)) {
     $_SESSION['msg'] = "<p style = 'color:green;'>Usuario cadastrado com sucesso</p>";
-    header("Location: index.php");
+    header("Location: listar.php");
 }else {
-    $_SESSION['msg'] = "<p style = 'color:red;'>Usuario não cadastrado</p>";
+    $_SESSION['msg'] = "<p style = 'color: #7C0A02;'>Usuario não cadastrado</p>";
     header("Location: index.php");
 }
 ?>
