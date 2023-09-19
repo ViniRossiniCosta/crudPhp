@@ -13,12 +13,16 @@ include_once("conexao.php");
 </head>
 
 <body>
+
+    <a href="/index.php">Cadastrar</a><br>
+    <a href="/listar.php">Listar</a><br>
+
     <h1>Lista de usuarios</h1>
 
     <?php
     if (isset($_SESSION['msg'])) {
         echo $_SESSION['msg'];
-        echo $_SESSION['msg'];
+        unset($_SESSION['msg']);
     }
 
     $pagina_atual = filter_input(INPUT_GET, 'pagina', FILTER_SANITIZE_NUMBER_INT);
@@ -34,7 +38,7 @@ include_once("conexao.php");
     while ($row_usuario = mysqli_fetch_assoc($resultado_usuario)) {
         echo "ID: " . $row_usuario['id'] . "<br>";
         echo "Nome: " . $row_usuario['nome'] . "<br>";
-        echo "E-mail: " . $row_usuario['email'] . "<br>";
+        echo "E-mail: " . $row_usuario['email'] . "<br><hr>";
     }
 
     $result_pg = "SELECT COUNT(id) AS num_result FROM usuarios";
@@ -49,7 +53,7 @@ include_once("conexao.php");
     echo "<a href='listar.php?pagina=1'> Primeira </a>";
 
     for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
-        if($pag_ant >= 1) {
+        if ($pag_ant >= 1) {
             echo "<a herf='listar.php?pagina=$pag_ant'> $pag_ant</a>";
         }
     }
@@ -58,23 +62,14 @@ include_once("conexao.php");
 
     echo "<a href='listar.php?pagina=$quantidade_pg'> Ultima </a>";
 
-    for($pag_dps = $pagina + 1; $pag_dps <= $pagina + $max_links; $pag_dps ++) {
-        if($pag_dps <= $quantidade_pg){
+    for ($pag_dps = $pagina + 1; $pag_dps <= $pagina + $max_links; $pag_dps++) {
+        if ($pag_dps <= $quantidade_pg) {
             echo "<a herf='listar.php?pagina=$pag_dps'>$pag_dps</a>";
         }
     }
 
     ?>
 
-    <form method="POST" action="processa.php">
-        <label for="">Nome: </label>
-        <input type="text" name="" id="" placeholder=" digite seu nome">
-        <br>
-        <label for="">E-mail: </label>
-        <input type="email" name="" id="" placeholder=" digite seu email">
-        <br>
-        <input type="submit" value="Cadastrar">
-    </form>
 </body>
 
 </html>
