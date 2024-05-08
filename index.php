@@ -22,12 +22,13 @@ session_start();
     }
     ?>
     <form method="POST" action="processa_cad.php">
-        <label>Nome: </label>
-        <input type="text" name="nome" placeholder="Digite seu nome"><br><br>
-
+        
         <label>E-mail: </label>
-        <input type="email" name="email" placeholder="Digite o seu e-mail"><br><br>
+        <input type="email" name="email" placeholder="Digite o seu Senha"><br><br>
 
+        <label>Senha: </label>
+        <input type="password" name="senha" placeholder="Digite o seu Senha"><br><br>
+        
         <input type="submit" value="Cadastrar">
     </form>
 </body>

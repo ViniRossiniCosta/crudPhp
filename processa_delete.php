@@ -1,20 +1,26 @@
-<?php 
-
+<?php
 session_start();
 include_once("conexao.php");
 
 $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-if(!empty($id)) {
-    $result_usuario = "DELETE FROM usuarios WHERE id='$id'";
-    $resultado_usuario = mysqli_query($conn, $result_usuario);
-    if(mysqli_affected_rows($conn)) {
-        $_SESSION['msg'] = "<p style='color:green;'> Usuario apagado </p>";
-        header("Location: listar.php");
-    }else {
-        $_SESSION['msg'] = "<p style= 'color: red;'> Usuario não foi apagado </p>";
-        header("Location: listar.php");
+
+if (!empty($id)) {
+    // Preparação da declaração SQL
+    $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    // Verifica se a exclusão foi bem-sucedida
+    if ($stmt->affected_rows > 0) {
+        $_SESSION['msg'] = "<p style='color:green;'>Usuário apagado</p>";
+    } else {
+        $_SESSION['msg'] = "<p style='color:red;'>Usuário não foi apagado</p>";
     }
-}else{
-    $_SESSION['msg'] = "<p style= 'color:red;'>Necessário selecionar um usuário</p>";
-	header("Location: listar.php");
+    $stmt->close();
+} else {
+    $_SESSION['msg'] = "<p style='color:red;'>Necessário selecionar um usuário</p>";
 }
+
+// Redireciona de volta para a página listar.php
+header("Location: listar.php");
+exit();

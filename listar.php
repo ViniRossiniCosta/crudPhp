@@ -36,8 +36,8 @@ include_once("conexao.php");
 	$resultado_usuarios = mysqli_query($conn, $result_usuarios);
 	while ($row_usuario = mysqli_fetch_assoc($resultado_usuarios)) {
 		echo "ID: " . $row_usuario['id'] . "<br>";
-		echo "Nome: " . $row_usuario['nome'] . "<br>";
 		echo "E-mail: " . $row_usuario['email'] . "<br>";
+		echo "Senha: " . $row_usuario['senha'] . "<br>";
 		echo "<a href='editar.php?id=" . $row_usuario['id'] . "'>Editar</a><br>";
 		echo "<a href='processa_delete.php?id=" . $row_usuario['id'] . "'>Deletar</a><br><hr>";
 	}

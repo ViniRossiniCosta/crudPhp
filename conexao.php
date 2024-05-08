@@ -2,10 +2,10 @@
 
 $servidor = "localhost";
 $usuario = "root";
-$senha = "";
+$email = "";
 $dbname = "formPhp";
 
 // cria conexao
-$conn = mysqli_connect($servidor, $usuario, $senha, $dbname);
+$conn = mysqli_connect($servidor, $usuario, $email, $dbname);
 
 ?>

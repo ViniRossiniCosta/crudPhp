@@ -1,19 +1,28 @@
 <?php 
-
 session_start();
 include_once("conexao.php");
 
-$nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+// Verifica se os campos obrigatórios estão preenchidos
+if (empty($_POST['email']) || empty($_POST['senha'])) {
+    $_SESSION['msg'] = "<p style='color:red;'>Por favor, preencha todos os campos.</p>";
+    header("Location: index.php");
+    exit();
+}
+
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+$senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_STRING);
 
-$result_usuario = "INSERT INTO usuarios (nome, email, created) VALUES ('$nome', '$email', now())";
-$resultado_usuario = mysqli_query($conn, $result_usuario);
+// Preparação da declaração SQL
+$stmt = $conn->prepare("INSERT INTO usuarios (email, senha, created) VALUES (?, ?, NOW())");
+$stmt->bind_param("ss", $email, $senha);
+$stmt->execute();
 
-if(mysqli_insert_id($conn)) {
-    $_SESSION['msg'] = "<p style = 'color:green;'>Usuario cadastrado com sucesso</p>";
+// Verifica se a inserção foi bem-sucedida
+if ($stmt->affected_rows > 0) {
+    $_SESSION['msg'] = "<p style='color:green;'>Usuário cadastrado com sucesso</p>";
     header("Location: listar.php");
-}else {
-    $_SESSION['msg'] = "<p style = 'color: #7C0A02;'>Usuario não cadastrado</p>";
+} else {
+    $_SESSION['msg'] = "<p style='color:red;'>Usuário não cadastrado</p>";
     header("Location: index.php");
 }
-?>
+$stmt->close();
